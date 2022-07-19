@@ -66,11 +66,11 @@ so to get the vcard code you have to take into account the target device and use
 ### iOS devices
 
 ```kotlin
-val vcf = vcard.androidVcard()
+val vcf = vcard.iOSVcard()
 ```
 
 ### Android devices
 
 ```kotlin
-val vcf = vcard.iOSVcard()
+val vcf = vcard.androidVcard()
 ```
