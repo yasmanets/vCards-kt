@@ -9,7 +9,6 @@ import org.junit.Assert.*
 import org.junit.FixMethodOrder
 import org.junit.Test
 import org.junit.runners.MethodSorters
-import vcard.VCard
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class VcardTest {
@@ -126,11 +125,18 @@ class VcardTest {
 
     @Test
     fun testP_generateAndroidVcard() {
-        val vcf = vcard.generateAndroidVcard()
+        val vcf = vcard.androidVcard()
         assertTrue(vcf.contains("FN;"))
         assertTrue(vcf.contains("N;"))
-        assertTrue(vcf.contains("EMAIL;"))
-        assertTrue(vcf.contains("PHOTO"))
-        assertTrue(vcf.contains("TEL;"))
+        assertTrue(vcf.contains("URL;CHARSET=UTF-8:https://www.linkedin.com/company/ulompi"))
+    }
+
+    @Test
+    fun testQ_generateIOSvCard() {
+        val vcf = vcard.iOSVcard()
+        assertTrue(vcf.contains("FN;"))
+        assertTrue(vcf.contains("N;"))
+        assertTrue(vcf.contains("item0.URL;CHARSET=UTF-8:https://www.linkedin.com/company/ulompi"))
+        assertTrue(vcf.contains("item0.X-ABLABEL;CHARSET=UTF-8:Linkedin"))
     }
 }

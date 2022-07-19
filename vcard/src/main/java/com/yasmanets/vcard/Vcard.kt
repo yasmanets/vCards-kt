@@ -1,6 +1,5 @@
-package vcard
+package com.yasmanets.vcard
 
-import com.yasmanets.vcard.Address
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -165,10 +164,10 @@ class VCard {
         return this.notes
     }
 
-    fun generateAndroidVcard(): String {
+    private fun vCardCommonValues(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
         var vcf = ""
-        vcf += "BEGIN:VCARD\n"
+        vcf += VCARD_BEGIN
         vcf += String.format("VERSION:%s\n", this.getVersion())
         vcf += String.format("FN;%s:%s %s\n", this.getEncoding(), this.getName(), this.getSurname())
         vcf += String.format("N;%s:%s;%s;;;\n",this.getEncoding(), this.getSurname(), this.getName())
@@ -206,17 +205,32 @@ class VCard {
             vcf += String.format("URL;%s;%s:%s\n", TYPE.WORK.value, this.getEncoding(), this.getOrganizationUrl())
         }
 
+        if (this.getNotes().isNotEmpty()) {
+            vcf += String.format("NOTE;%s:%s\n", this.getEncoding(), this.getNotes())
+        }
+        vcf += String.format("REV:%s\n", sdf.format(Date()))
+        return vcf
+    }
+
+    fun androidVcard(): String {
+        var vcf = this.vCardCommonValues()
         if (this.getUrl().size > 0) {
             for (url in this.getUrl()) {
                 vcf += String.format("URL;%s:%s\n", this.getEncoding(), url.value)
             }
         }
+        vcf += VCARD_END
+        return vcf
+    }
 
-        if (this.getNotes().isNotEmpty()) {
-            vcf += String.format("NOTE;%s:%s\n", this.getEncoding(), this.getNotes())
+    fun iOSVcard(): String {
+        var vcf = this.vCardCommonValues()
+        val urls = this.getUrl()
+        for (i in 0 until this.getUrl().size) {
+            vcf += String.format("item%s.URL;%s:%s\n", i, this.getEncoding(), urls.values.elementAt(i))
+            vcf += String.format("item%s.X-ABLABEL;%s:%s\n", i, this.getEncoding(), urls.keys.elementAt(i))
         }
-        vcf += String.format("REV:%s\n", sdf.format(Date()))
-        vcf += "END:VCARD"
+        vcf += VCARD_END
         return vcf
     }
 }

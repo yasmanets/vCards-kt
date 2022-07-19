@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-parcelize'
 apply plugin: 'maven-publish'
 
-group = 'com.yasmanets.vcard-kotlin'
+group = 'com.yasmanets.vCards-kt'
 
 // Because the components are created only during the afterEvaluate phase, you must
 // configure your publications using the afterEvaluate() lifecycle method.
@@ -16,8 +15,8 @@ afterEvaluate {
                 from components.release
 
                 // You can then customize attributes of the publication as shown below.
-                groupId = 'com.yasmanets.vcard-kotlin'
-                artifactId = 'vcard-kotlin'
+                groupId = 'com.yasmanets.vCards-kt'
+                artifactId = 'vCards-kt'
                 version = rootProject.libVersion
             }
         }
