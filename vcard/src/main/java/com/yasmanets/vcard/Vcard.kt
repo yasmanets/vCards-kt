@@ -164,14 +164,19 @@ class VCard {
         return this.notes
     }
 
-    private fun vCardCommonValues(): String {
+    private fun getRevDate(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+        return String.format("REV:%s\n", sdf.format(Date()))
+    }
+
+    private fun vCardCommonValues(): String {
+
         var vcf = ""
         vcf += VCARD_BEGIN
         vcf += String.format("VERSION:%s\n", this.getVersion())
         vcf += String.format("FN;%s:%s %s\n", this.getEncoding(), this.getName(), this.getSurname())
         vcf += String.format("N;%s:%s;%s;;;\n",this.getEncoding(), this.getSurname(), this.getName())
-        vcf += String.format("EMAIL;%s;type=WORK,INTERNET:%s\n", this.getEncoding(), this.getEmail())
+        vcf += String.format("EMAIL;%s;TYPE=WORK,INTERNET:%s\n", this.getEncoding(), this.getEmail())
 
         if (this.getPhoto().isNotEmpty()) {
             vcf += String.format("PHOTO;%s\n", this.getPhoto())
@@ -185,7 +190,7 @@ class VCard {
 
         if (this.getAddress().size > 0) {
             for (address in this.getAddress()) {
-                vcf += String.format("ADR;%s;%s:%s", this.getEncoding(), address.key, address.value.getFormattedAddress())
+                vcf += String.format("ADR;%s;%s:%s\n", this.getEncoding(), address.key, address.value.getFormattedAddress())
             }
         }
 
@@ -208,7 +213,6 @@ class VCard {
         if (this.getNotes().isNotEmpty()) {
             vcf += String.format("NOTE;%s:%s\n", this.getEncoding(), this.getNotes())
         }
-        vcf += String.format("REV:%s\n", sdf.format(Date()))
         return vcf
     }
 
@@ -219,6 +223,7 @@ class VCard {
                 vcf += String.format("URL;%s:%s\n", this.getEncoding(), url.value)
             }
         }
+        vcf += this.getRevDate()
         vcf += VCARD_END
         return vcf
     }
@@ -230,6 +235,7 @@ class VCard {
             vcf += String.format("item%s.URL;%s:%s\n", i, this.getEncoding(), urls.values.elementAt(i))
             vcf += String.format("item%s.X-ABLABEL;%s:%s\n", i, this.getEncoding(), urls.keys.elementAt(i))
         }
+        vcf += this.getRevDate()
         vcf += VCARD_END
         return vcf
     }
