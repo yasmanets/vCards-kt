@@ -2,9 +2,9 @@
 
 [![](https://jitpack.io/v/yasmanets/vCards-kt.svg)](https://jitpack.io/#yasmanets/vCards-kt)
 
-[![vCards-kt](.documentation/vcard-example.png?raw=true)](https://github.com/yasmanets/vCards-kt)
+Easily manage iOS, Mac OS, Android or Outlook formatted vCard (.vcf) files from your Android app.
 
-This library allows you to create vCards to import contacts to Outlook, iOS, Mac OS and Android devices from your website or application.
+[![vCards-kt](.documentation/vcard-example.png?raw=true)](https://github.com/yasmanets/vCards-kt)
 
 ## Install
 
