@@ -59,6 +59,10 @@ fun VCard.getDataFromVCF(vcf: String): VCard {
 
 		if (line.contains("EMAIL")) {
 			val values = line.split(":")
+			if (values[1].isEmpty()) {
+				continue
+			}
+
 			this.setEmail(values[1])
 			continue
 		}
@@ -66,6 +70,10 @@ fun VCard.getDataFromVCF(vcf: String): VCard {
 		if (line.contains("TEL")) {
 			val values = line.split(";")
 			val phone = values[1].split(":")[1]
+
+			if (phone.isEmpty()) {
+				continue
+			}
 
 			var type = VCard.TYPE.WORK
 			if (values[1].contains(VCard.TYPE.HOME.value)) {
@@ -77,24 +85,36 @@ fun VCard.getDataFromVCF(vcf: String): VCard {
 
 		if (line.contains("TITLE")) {
 			val title = line.split(":")[1]
+			if (title.isEmpty()) {
+				continue
+			}
 			this.setTitle(title)
 			continue
 		}
 
 		if (line.contains("ROLE")) {
 			val role = line.split(":")[1]
+			if (role.isEmpty()) {
+				continue
+			}
 			this.setRole(role)
 			continue
 		}
 
 		if (line.contains("ORG")) {
 			val organization = line.split(":")[1]
+			if (organization.isEmpty()) {
+				continue
+			}
 			this.setOrganization(organization)
 			continue
 		}
 
 		if (line.contains("URL") && line.contains("TYPE=WORK")) {
 			val organizationUrl = line.slice(line.indexOf(":", 0) + 1 until line.length)
+			if (organizationUrl.isEmpty()) {
+				continue
+			}
 			this.setOrganizationUrl(organizationUrl)
 			continue
 		}
@@ -103,6 +123,10 @@ fun VCard.getDataFromVCF(vcf: String): VCard {
 			val values = line.split(":")
 			val firstValues = values[0].split(";")
 			val addressValues = values[1].split(";").filter { it.isNotEmpty() }
+
+			if (addressValues.isEmpty()) {
+				continue
+			}
 
 			val type = if (firstValues[firstValues.size - 1] == VCard.TYPE.WORK.value) VCard.TYPE.WORK else VCard.TYPE.HOME
 			val address = Address()
@@ -117,12 +141,18 @@ fun VCard.getDataFromVCF(vcf: String): VCard {
 
 		if (line.contains("URL")) {
 			val url = line.slice(line.indexOf(":", 0) + 1 until line.length)
+			if (url.isEmpty()) {
+				continue
+			}
 			urls.add(url)
 			continue
 		}
 
 		if (line.contains("ABLABEL")) {
 			val values = line.split(":")
+			if (values.isEmpty()) {
+				continue
+			}
 			labels.add(values[1])
 			continue
 		}
